@@ -1,5 +1,6 @@
 package com.example.billing_system.entities;
 
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,6 +8,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Getter
+@Table
 public class Order {
 
     private String customerName;
