@@ -15,4 +15,12 @@ public class Order {
     private String productName;
     private Float productPrice;
     private Float quantity;
+
+    @Override
+    public String toString() {
+        return customerName+","+productName+","+productPrice+","+quantity;
+    }
+
+
+   
 }
