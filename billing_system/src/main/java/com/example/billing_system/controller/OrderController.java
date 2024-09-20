@@ -20,9 +20,11 @@ public class OrderController {
         this.oderService = oderService;
     }
 
-    @PostMapping("newBill")
+    @PostMapping("/newBill")
     public void postMethodName(@RequestBody List<Order> orders) {
-
+        // List<Order> orders = new ArrayList<>();
+        // orders.add(order);
+        oderService.writeOrdersToCsv(orders);
     }
 
 }
