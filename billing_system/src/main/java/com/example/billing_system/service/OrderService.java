@@ -16,8 +16,11 @@ public class OrderService {
 
     public Float processBill() {
         Float invoice = 0f;
+        Float totalPrice;
         for (Order order : orders) {
-            invoice = order.getProductPrice() * order.getQuantity();
+            totalPrice = order.getProductPrice() * order.getQuantity();
+            
+            invoice+=totalPrice;
         }
         return invoice;
     }
