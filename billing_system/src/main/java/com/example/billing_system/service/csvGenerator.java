@@ -6,17 +6,17 @@ import java.io.IOException;
 
 import org.springframework.stereotype.Service;
 
-import com.example.billing_system.entities.Order;
+import com.example.billing_system.entities.Product;
 
 @Service
 public class csvGenerator {
 
     // Method to write orders to a CSV file using BufferedWriter
-    public void writeOrderToCsv(Order order) {
+    public void writeOrderToCsv(Product order) {
         String filePath = "/home/admin/Desktop/projects/billing_system/billing_system/src/main/resources/orderList.csv";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
             // Write order details
-            writer.write(order.toString() + "," + order.getProductPrice() * order.getQuantity());
+            writer.write(order.toString());
             writer.newLine();  // Moves to the next line for the next order
 
             System.out.println("Order has been appended to the CSV file successfully!");

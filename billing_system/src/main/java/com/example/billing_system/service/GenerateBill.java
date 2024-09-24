@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
+import com.example.billing_system.entities.Customer;
+import com.example.billing_system.entities.Product;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.FontFactory;
@@ -19,24 +23,30 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@AllArgsConstructor
+@Setter
+@Getter
+@Service
 public class GenerateBill {
 
-    private String customerName;
-    private String customerNo;
-    private String customerEmail;
-    private String csvFilePath;
-
-    public GenerateBill(String customerName, String customerNo, String customerEmail, String csvFilePath) {
-        this.customerName = customerName;
-        this.customerNo = customerNo;
-        this.customerEmail = customerEmail;
-        this.csvFilePath = csvFilePath;
-    }
-
-    public void generateBill(String filePath) throws Exception {
-        List<Product> products = readProductsFromCSV(csvFilePath);
+    // private String customerName;
+    // private String customerNo;
+    // private String customerEmail;
+    // private String csvFilePath;
+    // public GenerateBill(String customerName, String customerNo, String customerEmail, String csvFilePath) {
+    //     this.customerName = customerName;
+    //     this.customerNo = customerNo;
+    //     this.customerEmail = customerEmail;
+    //     this.csvFilePath = csvFilePath;
+    // }
+    public void generateBill(Customer customer) throws Exception {
+        List<Product> products = readProductsFromCSV("/home/admin/Desktop/projects/billing_system/billing_system/src/main/resources/orderList.csv");
         Document document = new Document();
-        try (OutputStream outputStream = new FileOutputStream(new File(filePath))) {
+        try (OutputStream outputStream = new FileOutputStream(new File("/home/admin/Desktop/projects/billing_system/billing_system/src/main/resources/bill.pdf"))) {
             PdfWriter.getInstance(document, outputStream);
             document.open();
 
@@ -44,9 +54,9 @@ public class GenerateBill {
             document.add(new Paragraph("Billing Invoice", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18)));
 
             // Add Customer Details
-            document.add(new Paragraph("Customer Name: " + customerName));
-            document.add(new Paragraph("Customer No: " + customerNo));
-            document.add(new Paragraph("Customer Email: " + customerEmail));
+            document.add(new Paragraph("Customer Name: " + customer.getCustomer()));
+            document.add(new Paragraph("Customer No: " + customer.getMobileNumber()));
+            // document.add(new Paragraph("Customer Email: " + customerEmail));
             document.add(new Paragraph("Date: " + new SimpleDateFormat("dd/MM/yyyy").format(new Date())));
             document.add(new Paragraph("\n"));
 
@@ -76,6 +86,8 @@ public class GenerateBill {
         }
     }
 
+    // public clearCsv(String filePath){
+    // }
     private List<Product> readProductsFromCSV(String csvFilePath) throws Exception {
         List<Product> products = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
@@ -107,51 +119,18 @@ public class GenerateBill {
     private void addProductRow(PdfPTable table, Product product) {
         table.addCell(String.valueOf(product.getProductId()));
         table.addCell(product.getProductName());
-        table.addCell(String.format("%.2f", product.getUnitPrice()));
         table.addCell(String.valueOf(product.getQuantity()));
+        table.addCell(String.format("%.2f", product.getUnitPrice()));
         table.addCell(String.valueOf(product.getPrice()));
     }
+    // public static void main(String[] args) {
+    //     GenerateBill billGenerator = new GenerateBill("John Doe", "123456", "john.doe@example.com", "/home/admin/Desktop/billing_system/billing_system/billing_system/src/main/resources/products.csv");
+    //     try {
+    //         billGenerator.generateBill("bill.pdf");
+    //     } catch (Exception e) {
+    //         // TODO Auto-generated catch block
+    //         e.printStackTrace();
+    //     }
 
-    public static class Product {
-        private int productId;
-        private String productName;
-        private double unitPrice;
-        private int quantity;
-
-        public Product(int productId, String productName, double unitPrice, int quantity) {
-            this.productId = productId;
-            this.productName = productName;
-            this.unitPrice = unitPrice;
-            this.quantity = quantity;
-        }
-
-        public int getProductId() {
-            return productId;
-        }
-
-        public String getProductName() {
-            return productName;
-        }
-
-        public double getUnitPrice() {
-            return unitPrice;
-        }
-
-        public int getQuantity() {
-            return quantity;
-        }
-        public Double getPrice() {
-            return quantity*unitPrice;
-        }
-    }
-    public static void main(String[] args) {
-        GenerateBill billGenerator = new GenerateBill("John Doe", "123456", "john.doe@example.com", "/home/admin/Desktop/billing_system/billing_system/billing_system/src/main/resources/products.csv");
-        try {
-            billGenerator.generateBill("bill.pdf");
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-    }
+    // }
 }

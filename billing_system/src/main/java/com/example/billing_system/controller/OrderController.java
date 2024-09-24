@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.billing_system.entities.Order;
+import com.example.billing_system.entities.Product;
 import com.example.billing_system.service.OrderService;
 
 @RestController
@@ -21,7 +21,7 @@ public class OrderController {
     }
 
     @PostMapping("/newBill")
-    public void postMethodName(@RequestBody List<Order> orders) {
+    public void postMethodName(@RequestBody List<Product> orders) {
         // List<Order> orders = new ArrayList<>();
         // orders.add(order);
         oderService.writeOrdersToCsv(orders);
