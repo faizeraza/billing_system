@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,16 +35,6 @@ import lombok.Setter;
 @Service
 public class GenerateBill {
 
-    // private String customerName;
-    // private String customerNo;
-    // private String customerEmail;
-    // private String csvFilePath;
-    // public GenerateBill(String customerName, String customerNo, String customerEmail, String csvFilePath) {
-    //     this.customerName = customerName;
-    //     this.customerNo = customerNo;
-    //     this.customerEmail = customerEmail;
-    //     this.csvFilePath = csvFilePath;
-    // }
     public void generateBill(Customer customer) throws Exception {
         List<Product> products = readProductsFromCSV("/home/admin/Desktop/projects/billing_system/billing_system/src/main/resources/orderList.csv");
         Document document = new Document();
@@ -80,14 +72,26 @@ public class GenerateBill {
 
             // Add Subtotal
             document.add(new Paragraph("\nSubtotal: $" + String.format("%.2f", subtotal), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12)));
-
             // Close Document
             document.close();
+            // Clear csv
+            clearCsv();
         }
     }
 
-    // public clearCsv(String filePath){
-    // }
+    public void clearCsv() {
+        FileWriter writer;
+        try {
+            writer = new FileWriter("/home/admin/Desktop/projects/billing_system/billing_system/src/main/resources/orderList.csv", false);
+            writer.write("");  // Writing an empty string to clear the file
+            writer.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
     private List<Product> readProductsFromCSV(String csvFilePath) throws Exception {
         List<Product> products = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
@@ -119,8 +123,8 @@ public class GenerateBill {
     private void addProductRow(PdfPTable table, Product product) {
         table.addCell(String.valueOf(product.getProductId()));
         table.addCell(product.getProductName());
-        table.addCell(String.valueOf(product.getQuantity()));
         table.addCell(String.format("%.2f", product.getUnitPrice()));
+        table.addCell(String.valueOf(product.getQuantity()));
         table.addCell(String.valueOf(product.getPrice()));
     }
     // public static void main(String[] args) {

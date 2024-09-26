@@ -9,7 +9,7 @@ import com.example.billing_system.entities.Customer;
 import com.example.billing_system.service.GenerateBill;
 
 @RestController
-@RequestMapping("api/v1/getBill")
+@RequestMapping("/getBill")
 public class GenerateBillController {
 
     private final GenerateBill generateBill;
@@ -26,5 +26,4 @@ public class GenerateBillController {
             System.out.println("Error" + ex);
         }
     }
-
 }

@@ -11,7 +11,7 @@ import com.example.billing_system.entities.Product;
 import com.example.billing_system.service.OrderService;
 
 @RestController
-@RequestMapping("api/v1/order")
+@RequestMapping("/order")
 public class OrderController {
 
     private final OrderService oderService;
