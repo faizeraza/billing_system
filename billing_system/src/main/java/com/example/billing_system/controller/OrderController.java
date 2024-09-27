@@ -1,5 +1,6 @@
 package com.example.billing_system.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,11 +20,13 @@ public class OrderController {
     }
 
     @PostMapping("/newBill")
-    public void postMethodName(@RequestBody Invoice invoice) {
+    public ResponseEntity<String> postMethodName(@RequestBody Invoice invoice) {
         try {
             generateBill.generateBill(invoice);
+            return ResponseEntity.ok("Bill Generated Successfully!!!");
         } catch (Exception ex) {
             System.out.println("Error" + ex);
         }
+        return ResponseEntity.ok("Bill Not Generated !!!");
     }
 }
