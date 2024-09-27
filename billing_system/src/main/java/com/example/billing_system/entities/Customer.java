@@ -13,4 +13,7 @@ public class Customer {
 
     private String name;
     private String mobileNumber;
+    private String address;
+    private String email;
+
 }

@@ -45,6 +45,9 @@ public class GenerateBill {
             // Add Customer Details
             document.add(new Paragraph("Customer Name: " + customer.getName()));
             document.add(new Paragraph("Customer No: " + customer.getMobileNumber()));
+            document.add(new Paragraph("Customer Address: " + customer.getAddress()));
+            document.add(new Paragraph("Customer Email: " + customer.getEmail()));
+
             // document.add(new Paragraph("Customer Email: " + customerEmail));
             document.add(new Paragraph("Date: " + new SimpleDateFormat("dd/MM/yyyy").format(new Date())));
             document.add(new Paragraph("\n"));
