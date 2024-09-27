@@ -105,14 +105,14 @@ function submitInvoice() {
     // Ensure all products in the table are added to the products array
     const productRows = document.querySelectorAll('#productBody tr');
     products = []; // Reset the products array
-
+    let productId = 1;
     productRows.forEach(row => {
         const productName = row.children[0].children[0].value;
         const price = parseFloat(row.children[1].children[0].value) || 0;
         const quantity = parseInt(row.children[2].children[0].value) || 0;
-
         if (productName && price && quantity) {
             products.push({
+                productId: productId++,
                 productName: productName,
                 unitPrice: price,
                 quantity: quantity
