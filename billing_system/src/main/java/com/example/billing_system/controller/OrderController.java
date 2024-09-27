@@ -25,8 +25,7 @@ public class OrderController {
             generateBill.generateBill(invoice);
             return ResponseEntity.ok("Bill Generated Successfully!!!");
         } catch (Exception ex) {
-            System.out.println("Error" + ex);
+            return ResponseEntity.ok("Bill Not Generated !!! " + ex.getMessage());
         }
-        return ResponseEntity.ok("Bill Not Generated !!!");
     }
 }
