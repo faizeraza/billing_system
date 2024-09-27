@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            <h2>Invoice Generator</h2>
+        </div>
+        <div class="card-content">
+            <div class="input-group">
+                <label for="customerName">Customer Name</label>
+                <input id="customerName" type="text" placeholder="Enter customer name">
+            </div>
+            <div class="input-group">
+                <label for="customerPhone">Phone</label>
+                <input id="customerPhone" type="tel" placeholder="Enter phone number">
+            </div>
+            <div class="input-group">
+                <label for="customerAddress">Address</label>
+                <input id="customerAddress" type="text" placeholder="Enter address">
+            </div>
+
+            <table id="productTable">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Amount</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="productBody">
+                    <tr>
+                        <td><input type="text" placeholder="Product name"></td>
+                        <td><input type="number" placeholder="Price" oninput="updateAmount(this)"></td>
+                        <td><input type="number" placeholder="Quantity" oninput="updateAmount(this)"></td>
+                        <td class="amount">$0.00</td>
+                        <td><button class="remove-btn" onclick="removeProduct(this)">Remove</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button id="addProduct" onclick="addProduct()">Add Product</button>
+        </div>
+        <div class="card-footer">
+            <div>Total Amount:</div>
+            <div id="totalAmount">$0.00</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
