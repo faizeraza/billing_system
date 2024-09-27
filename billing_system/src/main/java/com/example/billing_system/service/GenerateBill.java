@@ -1,20 +1,16 @@
 package com.example.billing_system.service;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.example.billing_system.entities.Customer;
+import com.example.billing_system.entities.Invoice;
 import com.example.billing_system.entities.Product;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -35,8 +31,9 @@ import lombok.Setter;
 @Service
 public class GenerateBill {
 
-    public void generateBill(Customer customer) throws Exception {
-        List<Product> products = readProductsFromCSV("/home/admin/Desktop/projects/billing_system/billing_system/src/main/resources/orderList.csv");
+    public void generateBill(Invoice invoice) throws Exception {
+        List<Product> products = invoice.getProduct();
+        Customer customer = invoice.getCustomer();
         Document document = new Document();
         try (OutputStream outputStream = new FileOutputStream(new File("/home/admin/Desktop/projects/billing_system/billing_system/src/main/resources/bill.pdf"))) {
             PdfWriter.getInstance(document, outputStream);
@@ -46,7 +43,7 @@ public class GenerateBill {
             document.add(new Paragraph("Billing Invoice", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18)));
 
             // Add Customer Details
-            document.add(new Paragraph("Customer Name: " + customer.getCustomer()));
+            document.add(new Paragraph("Customer Name: " + customer.getName()));
             document.add(new Paragraph("Customer No: " + customer.getMobileNumber()));
             // document.add(new Paragraph("Customer Email: " + customerEmail));
             document.add(new Paragraph("Date: " + new SimpleDateFormat("dd/MM/yyyy").format(new Date())));
@@ -75,41 +72,38 @@ public class GenerateBill {
             // Close Document
             document.close();
             // Clear csv
-            clearCsv();
+            // clearCsv();
         }
     }
 
-    public void clearCsv() {
-        FileWriter writer;
-        try {
-            writer = new FileWriter("/home/admin/Desktop/projects/billing_system/billing_system/src/main/resources/orderList.csv", false);
-            writer.write("");  // Writing an empty string to clear the file
-            writer.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-    }
-
-    private List<Product> readProductsFromCSV(String csvFilePath) throws Exception {
-        List<Product> products = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] values = line.split(",");
-                if (values.length == 4) { // Assuming CSV has 4 columns
-                    int productId = Integer.parseInt(values[0].trim());
-                    String productName = values[1].trim();
-                    double unitPrice = Double.parseDouble(values[2].trim());
-                    int quantity = Integer.parseInt(values[3].trim());
-                    products.add(new Product(productId, productName, unitPrice, quantity));
-                }
-            }
-        }
-        return products;
-    }
-
+    // public void clearCsv() {
+    //     FileWriter writer;
+    //     try {
+    //         writer = new FileWriter("/home/admin/Desktop/projects/billing_system/billing_system/src/main/resources/orderList.csv", false);
+    //         writer.write("");  // Writing an empty string to clear the file
+    //         writer.close();
+    //     } catch (IOException e) {
+    //         // TODO Auto-generated catch block
+    //         e.printStackTrace();
+    //     }
+    // }
+    // private List<Product> readProductsFromCSV(String csvFilePath) throws Exception {
+    //     List<Product> products = new ArrayList<>();
+    //     try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
+    //         String line;
+    //         while ((line = br.readLine()) != null) {
+    //             String[] values = line.split(",");
+    //             if (values.length == 4) { // Assuming CSV has 4 columns
+    //                 int productId = Integer.parseInt(values[0].trim());
+    //                 String productName = values[1].trim();
+    //                 double unitPrice = Double.parseDouble(values[2].trim());
+    //                 int quantity = Integer.parseInt(values[3].trim());
+    //                 products.add(new Product(productId, productName, unitPrice, quantity));
+    //             }
+    //         }
+    //     }
+    //     return products;
+    // }
     private void addTableHeader(PdfPTable table) {
         String[] headers = {"Product ID", "Product Name", "Unit Price", "Quantity", "ProductTotal"};
         for (String headerTitle : headers) {

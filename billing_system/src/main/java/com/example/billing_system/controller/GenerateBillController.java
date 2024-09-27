@@ -1,29 +1,29 @@
-package com.example.billing_system.controller;
+// package com.example.billing_system.controller;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+// import org.springframework.web.bind.annotation.PostMapping;
+// import org.springframework.web.bind.annotation.RequestBody;
+// import org.springframework.web.bind.annotation.RequestMapping;
+// import org.springframework.web.bind.annotation.RestController;
 
-import com.example.billing_system.entities.Customer;
-import com.example.billing_system.service.GenerateBill;
+// import com.example.billing_system.entities.Customer;
+// import com.example.billing_system.service.GenerateBill;
 
-@RestController
-@RequestMapping("/getBill")
-public class GenerateBillController {
+// @RestController
+// @RequestMapping("/getBill")
+// public class GenerateBillController {
 
-    private final GenerateBill generateBill;
+//     private final GenerateBill generateBill;
 
-    public GenerateBillController(GenerateBill generateBill) {
-        this.generateBill = generateBill;
-    }
+//     public GenerateBillController(GenerateBill generateBill) {
+//         this.generateBill = generateBill;
+//     }
 
-    @PostMapping()
-    public void postMethodName(@RequestBody Customer customer) {
-        try {
-            generateBill.generateBill(customer);
-        } catch (Exception ex) {
-            System.out.println("Error" + ex);
-        }
-    }
-}
+//     @PostMapping()
+//     public void postMethodName(@RequestBody Customer customer) {
+//         try {
+//             generateBill.generateBill(customer);
+//         } catch (Exception ex) {
+//             System.out.println("Error" + ex);
+//         }
+//     }
+// }

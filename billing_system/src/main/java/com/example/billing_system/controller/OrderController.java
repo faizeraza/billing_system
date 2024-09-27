@@ -1,29 +1,29 @@
 package com.example.billing_system.controller;
 
-import java.util.List;
-
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.billing_system.entities.Product;
-import com.example.billing_system.service.OrderService;
+import com.example.billing_system.entities.Invoice;
+import com.example.billing_system.service.GenerateBill;
 
 @RestController
 @RequestMapping("/order")
 public class OrderController {
 
-    private final OrderService oderService;
+    private final GenerateBill generateBill;
 
-    public OrderController(OrderService oderService) {
-        this.oderService = oderService;
+    public OrderController(GenerateBill generateBill1) {
+        this.generateBill = generateBill1;
     }
 
     @PostMapping("/newBill")
-    public void postMethodName(@RequestBody List<Product> orders) {
-        // List<Order> orders = new ArrayList<>();
-        // orders.add(order);
-        oderService.writeOrdersToCsv(orders);
+    public void postMethodName(@RequestBody Invoice invoice) {
+        try {
+            generateBill.generateBill(invoice);
+        } catch (Exception ex) {
+            System.out.println("Error" + ex);
+        }
     }
 }
