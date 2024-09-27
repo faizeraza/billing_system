@@ -35,7 +35,7 @@ public class GenerateBill {
         List<Product> products = invoice.getProduct();
         Customer customer = invoice.getCustomer();
         Document document = new Document();
-        try (OutputStream outputStream = new FileOutputStream(new File("/home/admin/Desktop/projects/billing_system/billing_system/src/main/resources/bill.pdf"))) {
+        try (OutputStream outputStream = new FileOutputStream(new File("src/main/resources/bill.pdf"))) {
             PdfWriter.getInstance(document, outputStream);
             document.open();
 
