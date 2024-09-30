@@ -41,12 +41,12 @@ public class GenerateBill {
 
             // Add Title
             document.add(new Paragraph("Billing Invoice", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18)));
-
+            System.out.println("Email, " + customer.getEmail());
             // Add Customer Details
             document.add(new Paragraph("Customer Name: " + customer.getName()));
-            document.add(new Paragraph("Customer No: " + customer.getMobileNumber()));
-            document.add(new Paragraph("Customer Address: " + customer.getAddress()));
-            document.add(new Paragraph("Customer Email: " + customer.getEmail()));
+            document.add(new Paragraph("Mobile No: " + customer.getMobileNumber()));
+            document.add(new Paragraph("Address: " + customer.getAddress()));
+            document.add(new Paragraph("Email: " + customer.getEmail()));
 
             // document.add(new Paragraph("Customer Email: " + customerEmail));
             document.add(new Paragraph("Date: " + new SimpleDateFormat("dd/MM/yyyy").format(new Date())));
@@ -79,34 +79,6 @@ public class GenerateBill {
         }
     }
 
-    // public void clearCsv() {
-    //     FileWriter writer;
-    //     try {
-    //         writer = new FileWriter("/home/admin/Desktop/projects/billing_system/billing_system/src/main/resources/orderList.csv", false);
-    //         writer.write("");  // Writing an empty string to clear the file
-    //         writer.close();
-    //     } catch (IOException e) {
-    //         // TODO Auto-generated catch block
-    //         e.printStackTrace();
-    //     }
-    // }
-    // private List<Product> readProductsFromCSV(String csvFilePath) throws Exception {
-    //     List<Product> products = new ArrayList<>();
-    //     try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
-    //         String line;
-    //         while ((line = br.readLine()) != null) {
-    //             String[] values = line.split(",");
-    //             if (values.length == 4) { // Assuming CSV has 4 columns
-    //                 int productId = Integer.parseInt(values[0].trim());
-    //                 String productName = values[1].trim();
-    //                 double unitPrice = Double.parseDouble(values[2].trim());
-    //                 int quantity = Integer.parseInt(values[3].trim());
-    //                 products.add(new Product(productId, productName, unitPrice, quantity));
-    //             }
-    //         }
-    //     }
-    //     return products;
-    // }
     private void addTableHeader(PdfPTable table) {
         String[] headers = {"Product ID", "Product Name", "Unit Price", "Quantity", "ProductTotal"};
         for (String headerTitle : headers) {
@@ -124,14 +96,5 @@ public class GenerateBill {
         table.addCell(String.valueOf(product.getQuantity()));
         table.addCell(String.valueOf(product.getPrice()));
     }
-    // public static void main(String[] args) {
-    //     GenerateBill billGenerator = new GenerateBill("John Doe", "123456", "john.doe@example.com", "/home/admin/Desktop/billing_system/billing_system/billing_system/src/main/resources/products.csv");
-    //     try {
-    //         billGenerator.generateBill("bill.pdf");
-    //     } catch (Exception e) {
-    //         // TODO Auto-generated catch block
-    //         e.printStackTrace();
-    //     }
 
-    // }
 }

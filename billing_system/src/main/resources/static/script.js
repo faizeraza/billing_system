@@ -1,6 +1,6 @@
 // You can add functionality here to send the invoice data to the Spring Boot backend
 let products = [];
-
+let tempEmail;
 function addProduct() {
     const productBody = document.getElementById('productBody');
     const newRow = `
@@ -101,7 +101,8 @@ function submitInvoice() {
     const customerName = document.getElementById('customerName').value;
     const customerPhone = document.getElementById('customerPhone').value;
     const customerAddress = document.getElementById('customerAddress').value;
-    
+    const customerEmail = document.getElementById('customerEmail').value;    
+    tempEmail = customerEmail;
     // Ensure all products in the table are added to the products array
     const productRows = document.querySelectorAll('#productBody tr');
     products = []; // Reset the products array
@@ -126,11 +127,11 @@ function submitInvoice() {
             name: customerName,
             mobileNumber: customerPhone,
             address: customerAddress,
-            email: '' // Add email input if needed
+            email: customerEmail // Add email input if needed
         },
         product: products // This now includes all products
     };
-
+    
     // Send the invoice data to the Spring Boot backend
     fetch('/order/newBill', {
         method: 'POST',
@@ -146,6 +147,70 @@ function submitInvoice() {
         resetForm();
     })
     .catch(error => console.error('Error:', error));
+}
+
+function downloadInvoice() {
+    const customerName = document.getElementById('customerName').value;
+    const customerPhone = document.getElementById('customerPhone').value;
+    const customerAddress = document.getElementById('customerAddress').value;
+    const customerEmail = document.getElementById('customerEmail').value;    
+    tempEmail = customerEmail;
+    // Ensure all products in the table are added to the products array
+    const productRows = document.querySelectorAll('#productBody tr');
+    products = []; // Reset the products array
+    let productId = 1;
+    productRows.forEach(row => {
+        const productName = row.children[0].children[0].value;
+        const price = parseFloat(row.children[1].children[0].value) || 0;
+        const quantity = parseInt(row.children[2].children[0].value) || 0;
+        if (productName && price && quantity) {
+            products.push({
+                productId: productId++,
+                productName: productName,
+                unitPrice: price,
+                quantity: quantity
+            });
+        }
+    });
+
+    // Prepare the invoice object
+    const invoice = {
+        customer: {
+            name: customerName,
+            mobileNumber: customerPhone,
+            address: customerAddress,
+            email: customerEmail // Add email input if needed
+        },
+        product: products // This now includes all products
+    };
+    // Send a request to the /download endpoint
+    fetch('/order/download', {
+        method: 'OPTIONS',  // It was specified as a GET in your code, but since you are passing a body, it should be POST
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(invoice)
+    })
+    .then(response => {
+        if (response.ok) {
+            tempEmail = response;
+            return response.blob(); // Convert the response to a Blob (binary large object)
+        } else {
+            throw new Error('Failed to download the file');
+        }
+    })
+    .then(blob => {
+        // Create a link element to download the PDF file
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'bill.pdf';  // Set the default file name
+        document.body.appendChild(a);
+        a.click();  // Trigger the download
+        document.body.removeChild(a);  // Clean up the link element
+        window.URL.revokeObjectURL(url);  // Release memory
+    })
+    .catch(error => console.error('Error downloading the invoice:', error));
 }
 
 
