@@ -65,90 +65,6 @@ function updateProduct(input, field) {
     }
 }
 
-// function submitInvoice() {
-//     const customerName = document.getElementById('customerName').value;
-//     const customerPhone = document.getElementById('customerPhone').value;
-//     const customerAddress = document.getElementById('customerAddress').value;
-//     console.log(products)
-//     const invoice = {
-//         customer: {
-//             name: customerName,
-//             mobileNumber: customerPhone,
-//             address: customerAddress,
-//             email: '', // Add email input if needed
-//         },
-//         product: products // Filter out any empty products
-//     };
-
-//     // Sending the invoice data to the Spring Boot backend
-//     fetch('/order/newBill', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify(invoice)
-//     })
-//     .then(response => response.text())
-//     .then(data => {
-//         alert(data); // Show response from the server
-//         // Optionally, clear the form and reset the state
-//         resetForm();
-//     })
-//     .catch(error => console.error('Error:', error));
-// }
-
-function submitInvoice() {
-    const customerName = document.getElementById('customerName').value;
-    const customerPhone = document.getElementById('customerPhone').value;
-    const customerAddress = document.getElementById('customerAddress').value;
-    const customerEmail = document.getElementById('customerEmail').value;    
-    tempEmail = customerEmail;
-    // Ensure all products in the table are added to the products array
-    const productRows = document.querySelectorAll('#productBody tr');
-    products = []; // Reset the products array
-    let productId = 1;
-    productRows.forEach(row => {
-        const productName = row.children[0].children[0].value;
-        const price = parseFloat(row.children[1].children[0].value) || 0;
-        const quantity = parseInt(row.children[2].children[0].value) || 0;
-        if (productName && price && quantity) {
-            products.push({
-                productId: productId++,
-                productName: productName,
-                unitPrice: price,
-                quantity: quantity
-            });
-        }
-    });
-
-    // Prepare the invoice object
-    const invoice = {
-        customer: {
-            name: customerName,
-            mobileNumber: customerPhone,
-            address: customerAddress,
-            email: customerEmail // Add email input if needed
-        },
-        product: products // This now includes all products
-    };
-    
-    // Send the invoice data to the Spring Boot backend
-    fetch('/order/newBill', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(invoice)
-    })
-    .then(response => response.text())
-    .then(data => {
-        alert(data); // Show response from the server
-        // Optionally, clear the form and reset the state
-        resetForm();
-    })
-    .catch(error => console.error('Error:', error));
-}
-
 function downloadInvoice() {
     const customerName = document.getElementById('customerName').value;
     const customerPhone = document.getElementById('customerPhone').value;
@@ -212,7 +128,6 @@ function downloadInvoice() {
     })
     .catch(error => console.error('Error downloading the invoice:', error));
 }
-
 
 function resetForm() {
     // Clear the input fields
