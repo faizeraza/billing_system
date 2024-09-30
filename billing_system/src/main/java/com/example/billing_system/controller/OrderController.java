@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.billing_system.entities.Invoice;
@@ -48,22 +47,34 @@ public class OrderController {
         }
     }
 
-    @RequestMapping(path = "/download", method = RequestMethod.GET)
-    public ResponseEntity<Resource> requestMethodName(@RequestBody Invoice invoice) throws IOException, Exception {
+    @PostMapping("/download")
+    public ResponseEntity<Resource> downloadInvoice(@RequestBody Invoice invoice) throws IOException, Exception {
+        HttpHeaders headers = new HttpHeaders();
         File file = new File("src/main/resources/bill.pdf");
-        System.out.println("Invoice" + invoice);
-        generateBill.generateBill(invoice);
-        HttpHeaders header = new HttpHeaders();
-        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=bill.pdf");
-        header.add("Cache-Control", "no-cache, no-store, must-revalidate");
-        header.add("Pragma", "no-cache");
-        header.add("Expires", "0");
-        Path path = Paths.get(file.getAbsolutePath());
-        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
+        Path path;
+        ByteArrayResource resource = null;
+        try {
+            // Generate the bill and save it as PDF
+            generateBill.generateBill(invoice);
+
+            // Prepare file for download
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=bill.pdf");  // Sets the filename for download
+            headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+            headers.add("Pragma", "no-cache");
+            headers.add("Expires", "0");
+
+            path = Paths.get(file.getAbsolutePath());
+            System.out.println("here we go : " + path);
+            resource = new ByteArrayResource(Files.readAllBytes(path));
+            System.out.println("File" + resource.toString());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        // Return the file as a downloadable response
         return ResponseEntity.ok()
-                .headers(header)
+                .headers(headers)
                 .contentLength(file.length())
-                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .contentType(MediaType.APPLICATION_PDF)
                 .body(resource);
     }
 }

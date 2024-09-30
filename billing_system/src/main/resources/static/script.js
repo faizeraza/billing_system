@@ -185,7 +185,7 @@ function downloadInvoice() {
     };
     // Send a request to the /download endpoint
     fetch('/order/download', {
-        method: 'OPTIONS',  // It was specified as a GET in your code, but since you are passing a body, it should be POST
+        method: 'POST',  // It was specified as a GET in your code, but since you are passing a body, it should be POST
         headers: {
             'Content-Type': 'application/json'
         },
