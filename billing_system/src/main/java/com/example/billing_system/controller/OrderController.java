@@ -7,7 +7,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +47,7 @@ public class OrderController {
     }
 
     @PostMapping("/download")
-    public ResponseEntity<Resource> downloadInvoice(@RequestBody Invoice invoice) throws IOException, Exception {
+    public ResponseEntity<Object> downloadInvoice(@RequestBody Invoice invoice) throws IOException, Exception {
         HttpHeaders headers = new HttpHeaders();
         File file = new File("src/main/resources/bill.pdf");
         Path path;
@@ -68,7 +67,7 @@ public class OrderController {
             resource = new ByteArrayResource(Files.readAllBytes(path));
             System.out.println("File" + resource.toString());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            return ResponseEntity.ok("Something Went Wrong");
         }
         // Return the file as a downloadable response
         return ResponseEntity.ok()

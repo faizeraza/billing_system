@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice Generator</title>
-    <link rel="stylesheet" th:href="@{/styles.css}">
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <div class="card">
         <div class="card-header">
-            <h2>Invoice Generator</h2>
+            <h2>Diamond Opticals</h2>
         </div>
         <div class="card-content">
             <div class="input-group">
-                <label for="customerName">Customer Name</label>
+                <label for="customerName">Party Name</label>
                 <input id="customerName" type="text" placeholder="Enter customer name">
             </div>
             <div class="input-group">
@@ -33,6 +33,7 @@
                 <thead>
                     <tr>
                         <th>Product Name</th>
+                        <th>Unit</th>
                         <th>Price</th>
                         <th>Quantity</th>
                         <th>Amount</th>
@@ -41,10 +42,11 @@
                 </thead>
                 <tbody id="productBody">
                     <tr>
-                        <td><input type="text" placeholder="Product name"></td>
+                        <td><input type="text" placeholder="Product name" oninput="updateProduct(this, 'name')"></td>
+                        <td><input type="text" placeholder="Unit" oninput="updateProduct(this)"></td>
                         <td><input type="number" placeholder="Price" oninput="updateAmount(this)"></td>
                         <td><input type="number" placeholder="Quantity" oninput="updateAmount(this)"></td>
-                        <td class="amount">$0.00</td>
+                        <td class="amount">0.00</td>
                         <td><button class="remove-btn" onclick="removeProduct(this)">Remove</button></td>
                     </tr>
                 </tbody>
@@ -53,7 +55,7 @@
         </div>
         <div class="card-footer">
             <div>Total Amount:</div>
-            <div id="totalAmount">$0.00</div>
+            <div id="totalAmount">0.00</div>
         </div>
 
         <div class="card-footer"></div>

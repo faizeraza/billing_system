@@ -40,7 +40,7 @@ public class GenerateBill {
             document.open();
 
             // Add Title
-            document.add(new Paragraph("Billing Invoice", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18)));
+            document.add(new Paragraph("                                   Diamond Opticals                                   ", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18)));
             System.out.println("Email, " + customer.getEmail());
             // Add Customer Details
             document.add(new Paragraph("Customer Name: " + customer.getName()));
@@ -53,7 +53,7 @@ public class GenerateBill {
             document.add(new Paragraph("\n"));
 
             // Create Product Table
-            PdfPTable table = new PdfPTable(5);
+            PdfPTable table = new PdfPTable(6);
             table.setWidthPercentage(100);
             table.setSpacingBefore(5f);
             table.setSpacingAfter(5f);
@@ -65,13 +65,13 @@ public class GenerateBill {
             // Add Products to Table
             for (Product product : products) {
                 addProductRow(table, product);
-                subtotal += product.getUnitPrice() * product.getQuantity();
+                subtotal += product.getPrice() * product.getQuantity();
             }
 
             document.add(table);
 
             // Add Subtotal
-            document.add(new Paragraph("\nSubtotal: $" + String.format("%.2f", subtotal), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12)));
+            document.add(new Paragraph("\nSubtotal: " + String.format("%.2f", subtotal), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12)));
             // Close Document
             document.close();
             // Clear csv
@@ -80,7 +80,7 @@ public class GenerateBill {
     }
 
     private void addTableHeader(PdfPTable table) {
-        String[] headers = {"Product ID", "Product Name", "Unit Price", "Quantity", "ProductTotal"};
+        String[] headers = {"S.N", "Description of Goods", "Unit", "Quantity", "Price", "Amount"};
         for (String headerTitle : headers) {
             PdfPCell header = new PdfPCell();
             header.setBackgroundColor(BaseColor.LIGHT_GRAY);
@@ -92,9 +92,10 @@ public class GenerateBill {
     private void addProductRow(PdfPTable table, Product product) {
         table.addCell(String.valueOf(product.getProductId()));
         table.addCell(product.getProductName());
-        table.addCell(String.format("%.2f", product.getUnitPrice()));
+        table.addCell(product.getUnit());
         table.addCell(String.valueOf(product.getQuantity()));
         table.addCell(String.valueOf(product.getPrice()));
+        table.addCell(String.format("%.2f", product.getAmount()));
     }
 
 }

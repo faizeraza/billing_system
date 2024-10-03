@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "server.thymeleaf.cache",
+    "type": "java.lang.String",
+    "description": "A description for 'server.thymeleaf.cache'"
+  },
+  {
+    "name": "server.thymeleaf.prefix",
+    "type": "java.lang.String",
+    "description": "A description for 'server.thymeleaf.prefix'"
+  },
+  {
+    "name": "server.thymeleaf.mode",
+    "type": "java.lang.String",
+    "description": "A description for 'server.thymeleaf.mode'"
+  }
+]}

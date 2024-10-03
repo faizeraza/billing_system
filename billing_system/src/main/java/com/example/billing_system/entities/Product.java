@@ -11,15 +11,16 @@ public class Product {
 
     private int productId;
     private String productName;
-    private double unitPrice;
+    private double price;
+    private String unit;
     private int quantity;
 
-    public Double getPrice() {
-        return quantity * unitPrice;
+    public Double getAmount() {
+        return quantity * price;
     }
 
     @Override
     public String toString() {
-        return productId + "," + productName + "," + unitPrice + "," + quantity;
+        return productId + "," + productName + "," + price + "," + quantity;
     }
 }
